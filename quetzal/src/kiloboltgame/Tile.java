@@ -54,7 +54,7 @@ public class Tile {
 			r.setBounds(tileX, tileY, 64, 64);
 	
 			if (r.intersects(Robot.rect) && type != 0) {
-			//	checkVerticalCollision(Robot.rect);
+
 				checkSideCollision(Robot.rect);
 			}
 	
