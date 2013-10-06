@@ -32,7 +32,7 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 			characterDown, characterJumped, background, heliboy, heliboy2,
 			heliboy3, heliboy4, heliboy5;
 
-	public static Image tilegrassTop, tilegrassBot, tilegrassLeft,
+	public static Image tilegrassTop,tilegrassTop2, tilegrassBot, tilegrassLeft,
 			tilegrassRight, tiledirt;
 
 	private Graphics second;
@@ -75,6 +75,7 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 
 		tiledirt = getImage(base, "data/floor2.png");
 		tilegrassTop = getImage(base, "data/wallcorridor2.png");
+		tilegrassTop2 = getImage(base, "data/wallcorridor22.png");
 		tilegrassBot = getImage(base, "data/wallcorridor8.png");
 		tilegrassLeft = getImage(base, "data/wallcorridor6.png");
 		tilegrassRight = getImage(base, "data/wallcorridor4.png");
@@ -110,8 +111,8 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 			e.printStackTrace();
 		}
 
-		hb = new Heliboy(340, 360);
-		hb2 = new Heliboy(700, 360);
+		hb = new Heliboy(340, 300);
+		hb2 = new Heliboy(900, 300);
 
 		Thread thread = new Thread(this);
 		thread.start();
@@ -292,16 +293,16 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 	public void keyPressed(KeyEvent e) {
 
 		switch (e.getKeyCode()) {
-		case KeyEvent.VK_UP:
-			System.out.println("Move up");
-			break;
+		
 
 		case KeyEvent.VK_DOWN:
-			currentSprite = characterDown;
-			if (robot.isJumped() == false) {
-				robot.setDucked(true);
-				robot.setSpeedX(0);
-			}
+			robot.moveDown();
+			robot.setMovingDown(true);
+			break;
+			
+		case KeyEvent.VK_UP:
+			robot.moveUp();
+			robot.setMovingUp(true);
 			break;
 
 		case KeyEvent.VK_LEFT:
@@ -314,9 +315,9 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 			robot.setMovingRight(true);
 			break;
 
-		case KeyEvent.VK_SPACE:
-			robot.jump();
-			break;
+	//	case KeyEvent.VK_SPACE:
+	//		robot.jump();
+	//		break;
 
 		case KeyEvent.VK_CONTROL:
 			if (robot.isDucked() == false && robot.isJumped() == false
@@ -334,12 +335,11 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 	public void keyReleased(KeyEvent e) {
 		switch (e.getKeyCode()) {
 		case KeyEvent.VK_UP:
-			System.out.println("Stop moving up");
+			robot.stopUp();
 			break;
 
 		case KeyEvent.VK_DOWN:
-			currentSprite = anim.getImage();
-			robot.setDucked(false);
+			robot.stopDown();
 			break;
 
 		case KeyEvent.VK_LEFT:

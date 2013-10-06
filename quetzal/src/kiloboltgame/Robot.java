@@ -14,19 +14,21 @@ public class Robot {
 	private boolean jumped = false;
 	private boolean movingLeft = false;
 	private boolean movingRight = false;
+	private boolean movingUp = false;
+	private boolean movingDown = false;
 	private boolean ducked = false;
 	private boolean readyToFire = true;
 
 	private int speedX = 0;
 	private int speedY = 0;
 	public static Rectangle rect = new Rectangle(0, 0, 0, 0);
-	public static Rectangle rect2 = new Rectangle(0, 0, 0, 0);
-	public static Rectangle rect3 = new Rectangle(0, 0, 0, 0);
-	public static Rectangle rect4 = new Rectangle(0, 0, 0, 0);
-	public static Rectangle yellowRed = new Rectangle(0, 0, 0, 0);
+//	public static Rectangle rect2 = new Rectangle(0, 0, 0, 0);
+//	public static Rectangle rect3 = new Rectangle(0, 0, 0, 0);
+//	public static Rectangle rect4 = new Rectangle(0, 0, 0, 0);
+//	public static Rectangle yellowRed = new Rectangle(0, 0, 0, 0);
 	
-	public static Rectangle footleft = new Rectangle(0,0,0,0);
-	public static Rectangle footright = new Rectangle(0,0,0,0);
+//	public static Rectangle footleft = new Rectangle(0,0,0,0);
+//	public static Rectangle footright = new Rectangle(0,0,0,0);
 	
 	
 	private Background bg1 = StartingClass.getBg1();
@@ -37,28 +39,54 @@ public class Robot {
 	public void update() {
 		// Moves Character or Scrolls Background accordingly.
 
-		if (speedX < 0) {
+		if (speedX < 0 && centerX >= 100) {
 			centerX += speedX;
 		}
+	
 		if (speedX == 0 || speedX < 0) {
 			bg1.setSpeedX(0);
 			bg2.setSpeedX(0);
 
 		}
-		if (centerX <= 200 && speedX > 0) {
+		if (centerX <= 600 && speedX > 0) {
 			centerX += speedX;
 		}
-		if (speedX > 0 && centerX > 200) {
+		if (speedX > 0 && centerX > 600) {
 			bg1.setSpeedX(-MOVESPEED / 5);
 			bg2.setSpeedX(-MOVESPEED / 5);
 		}
+		
+		if (speedX < 0 && centerX < 100) {
+			bg1.setSpeedX(MOVESPEED / 5);
+			bg2.setSpeedX(MOVESPEED / 5);
+		}
 
 		// Updates Y Position
-		centerY += 0;
+		if (speedY < 0 && centerY >= 100) {
+			centerY += speedY;
+		}
+	
+		if (speedY == 0 || speedY < 0) {
+			bg1.setSpeedY(0);
+			bg2.setSpeedY(0);
+
+		}
+		if (centerY <= 350 && speedY > 0) {
+			centerY += speedY;
+		}
+		if (speedY > 0 && centerY > 350) {
+			bg1.setSpeedY(-MOVESPEED / 5);
+			bg2.setSpeedY(-MOVESPEED / 5);
+		}
+		
+		if (speedY < 0 && centerY < 100) {
+			bg1.setSpeedY(MOVESPEED / 5);
+			bg2.setSpeedY(MOVESPEED / 5);
+		}
 
 		// Handles Jumping
 
-			speedY += 1;
+			
 
 		if (speedY > 3){
 			jumped = true;
@@ -93,6 +121,18 @@ public class Robot {
 			speedX = -MOVESPEED;
 		}
 	}
+	
+	public void moveUp() {
+		if (ducked == false) {
+			speedY = -MOVESPEED;
+		}
+	}
+
+	public void moveDown() {
+		if (ducked == false) {
+			speedY = MOVESPEED;
+		}
+	}
 
 	public void stopRight() {
 		setMovingRight(false);
@@ -101,6 +141,16 @@ public class Robot {
 
 	public void stopLeft() {
 		setMovingLeft(false);
+		stop();
+	}
+	
+	public void stopUp() {
+		setMovingUp(false);
+		stop();
+	}
+
+	public void stopDown() {
+		setMovingDown(false);
 		stop();
 	}
 
@@ -116,20 +166,32 @@ public class Robot {
 		if (isMovingRight() == true && isMovingLeft() == false) {
 			moveRight();
 		}
+		
+		if (isMovingUp() == false && isMovingDown() == false) {
+			speedY = 0;
+		}
+
+		if (isMovingDown() == false && isMovingUp() == true) {
+			moveUp();
+		}
+
+		if (isMovingDown() == true && isMovingUp() == false) {
+			moveDown();
+		}
 
 	}
 
-	public void jump() {
+/*	public void jump() {
 		if (jumped == false) {
 			speedY = JUMPSPEED;
 			jumped = true;
 		}
 
-	}
+	}*/
 
 	public void shoot() {
 		if (readyToFire) {
-			Projectile p = new Projectile(centerX + 50, centerY - 25);
+			Projectile p = new Projectile(centerX, centerY );
 			projectiles.add(p);
 		}
 	}
@@ -196,6 +258,22 @@ public class Robot {
 
 	public void setMovingLeft(boolean movingLeft) {
 		this.movingLeft = movingLeft;
+	}
+	
+	public boolean isMovingUp() {
+		return movingUp;
+	}
+
+	public void setMovingUp(boolean movingUp) {
+		this.movingUp = movingUp;
+	}
+	
+	public boolean isMovingDown() {
+		return movingDown;
+	}
+
+	public void setMovingDown(boolean movingDown) {
+		this.movingDown = movingDown;
 	}
 
 	public ArrayList getProjectiles() {

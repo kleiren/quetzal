@@ -5,7 +5,7 @@ import java.awt.Rectangle;
 
 public class Tile {
 
-	private int tileX, tileY, speedX, type;
+	private int tileX, tileY, speedX,speedY, type;
 	public Image tileImage;
 
 	private Robot robot = StartingClass.getRobot();
@@ -24,15 +24,20 @@ public class Tile {
 		if (type == 5) {
 			tileImage = StartingClass.tiledirt;
 		} else if (type == 8) {
-			tileImage = StartingClass.tilegrassTop;
+			tileImage = StartingClass.tilegrassBot;
 		} else if (type == 4) {
-			tileImage = StartingClass.tilegrassLeft;
-
-		} else if (type == 6) {
 			tileImage = StartingClass.tilegrassRight;
 
+		} else if (type == 6) {
+			tileImage = StartingClass.tilegrassLeft;
+
 		} else if (type == 2) {
-			tileImage = StartingClass.tilegrassBot;
+			int rand =(int)(Math.random() * ((2- 0) + 1));
+			System.out.println (rand);
+			if (rand==0){
+			tileImage = StartingClass.tilegrassTop;}else{
+				tileImage = StartingClass.tilegrassTop2;
+			}
 		} else {
 			tileImage = StartingClass.tiledirt;
 			type = 0;
@@ -42,11 +47,14 @@ public class Tile {
 
 		public void update() {
 			speedX = bg.getSpeedX() * 5;
+			speedY = bg.getSpeedY() * 5;
+
 			tileX += speedX;
+			tileY += speedY;
 			r.setBounds(tileX, tileY, 64, 64);
 	
-			if (r.intersects(Robot.yellowRed) && type != 0) {
-				checkVerticalCollision(Robot.rect);
+			if (r.intersects(Robot.rect) && type != 0) {
+			//	checkVerticalCollision(Robot.rect);
 				checkSideCollision(Robot.rect);
 			}
 	
@@ -76,7 +84,7 @@ public class Tile {
 		this.tileImage = tileImage;
 	}
 
-	public void checkVerticalCollision(Rectangle rect) {
+/*	public void checkVerticalCollision(Rectangle rect) {
 		if (rect.intersects(r)) {
 			
 		}
@@ -86,31 +94,42 @@ public class Tile {
 			robot.setSpeedY(0);
 			robot.setCenterY(tileY - 64);
 		}
-	}
+	}*/
 
 	public void checkSideCollision(Rectangle rect) {
-		if (type != 5 && type != 2 && type != 0){
-			if (rect.intersects(r)) {
+	
+			if ((type==8) &&rect.intersects(r)) {
+				
+	
+				robot.setSpeedX(0);
+				
+				robot.setSpeedY(0);
+				robot.setCenterY(tileY - 64);
+	
+			}
+			
+			if ((type==2)&& rect.intersects(r)) {
+				robot.setCenterY(tileY + 64);
+	
+				robot.setSpeedX(0);
+				robot.setSpeedY(0);
+			}
+			
+			
+			if (type==6 && rect.intersects(r)) {
 				robot.setCenterX(tileX + 64);
 	
 				robot.setSpeedX(0);
-	
-			}else if (rect.intersects(r)) {
-				robot.setCenterX(tileX + 64);
-				robot.setSpeedX(0);
+				robot.setSpeedY(0);
 			}
-			
-			if (rect.intersects(r)) {
+			if (type==4 && rect.intersects(r)) {
 				robot.setCenterX(tileX - 64);
 	
 				robot.setSpeedX(0);
+				robot.setSpeedY(0);
 			}
-			
-			else if (rect.intersects(r)) {
-				robot.setCenterX(tileX - 64);
-				robot.setSpeedX(0);
-			}
-		}
+		
+		
 	}
 
 }
