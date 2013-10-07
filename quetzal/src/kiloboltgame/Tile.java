@@ -33,7 +33,7 @@ public class Tile {
 
 		} else if (type == 2) {
 			int rand =(int)(Math.random() * ((2- 0) + 1));
-			System.out.println (rand);
+		
 			if (rand==0){
 			tileImage = StartingClass.tilegrassTop;}else{
 				tileImage = StartingClass.tilegrassTop2;

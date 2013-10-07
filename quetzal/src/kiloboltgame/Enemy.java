@@ -14,7 +14,7 @@ public class Enemy {
 	public void update() {
 		centerX += speedX;
 		speedX = bg.getSpeedX()*5;
-		r.setBounds(centerX - 25, centerY-25, 50, 60);
+		r.setBounds(centerX , centerY, 64, 64);
 		
 		centerY += speedY;
 		speedY = bg.getSpeedY()*5;

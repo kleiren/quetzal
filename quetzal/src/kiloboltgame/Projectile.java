@@ -38,7 +38,7 @@ public class Projectile {
 				StartingClass.hb.health -= 1;
 			}
 			if (StartingClass.hb.health == 0) {
-				StartingClass.hb.setCenterX(-100);
+				StartingClass.hb.setCenterX(-1000);
 				StartingClass.score += 5;
 
 			}
@@ -52,7 +52,7 @@ public class Projectile {
 				StartingClass.hb2.health -= 1;
 			}
 			if (StartingClass.hb2.health == 0) {
-				StartingClass.hb2.setCenterX(-100);
+				StartingClass.hb2.setCenterX(-1000);
 				StartingClass.score += 5;
 
 			}

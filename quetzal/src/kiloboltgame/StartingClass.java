@@ -32,8 +32,8 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 			characterDown, characterJumped, background, heliboy, heliboy2,
 			heliboy3, heliboy4, heliboy5;
 
-	public static Image tilegrassTop,tilegrassTop2, tilegrassBot, tilegrassLeft,
-			tilegrassRight, tiledirt;
+	public static Image tilegrassTop, tilegrassTop2, tilegrassBot,
+			tilegrassLeft, tilegrassRight, tiledirt;
 
 	private Graphics second;
 	private URL base;
@@ -60,7 +60,6 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 		// Image Setups
 		character = getImage(base, "data/Kleiren.png");
 		character2 = getImage(base, "data/Kleiren2.png");
-		
 
 		characterDown = getImage(base, "data/Kleiren.png");
 		characterJumped = getImage(base, "data/Kleiren.png");
@@ -83,7 +82,6 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 		anim = new Animation();
 		anim.addFrame(character, 200);
 		anim.addFrame(character2, 200);
-		
 
 		hanim = new Animation();
 		hanim.addFrame(heliboy, 100);
@@ -111,8 +109,8 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 			e.printStackTrace();
 		}
 
-		hb = new Heliboy(340, 300);
-		hb2 = new Heliboy(900, 300);
+		hb = new Heliboy(340, 200);
+		hb2 = new Heliboy(900, 200);
 
 		Thread thread = new Thread(this);
 		thread.start();
@@ -169,40 +167,42 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 	public void run() {
 		if (state == GameState.Running) {
 
-		while (true) {
-			robot.update();
-			if (robot.isJumped()) {
-				currentSprite = characterJumped;
-			} else if (robot.isJumped() == false && robot.isDucked() == false) {
-				currentSprite = anim.getImage();
-			}
-
-			ArrayList projectiles = robot.getProjectiles();
-			for (int i = 0; i < projectiles.size(); i++) {
-				Projectile p = (Projectile) projectiles.get(i);
-				if (p.isVisible() == true) {
-					p.update();
-				} else {
-					projectiles.remove(i);
+			while (true) {
+				robot.update();
+				if (robot.isJumped()) {
+					currentSprite = characterJumped;
+				} else if (robot.isJumped() == false
+						&& robot.isDucked() == false) {
+					currentSprite = anim.getImage();
 				}
-			}
 
-			updateTiles();
-			hb.update();
-			hb2.update();
-			bg1.update();
-			bg2.update();
-			animate();
-			repaint();
-			try {
-				Thread.sleep(17);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+				ArrayList projectiles = robot.getProjectiles();
+				for (int i = 0; i < projectiles.size(); i++) {
+					Projectile p = (Projectile) projectiles.get(i);
+					if (p.isVisible() == true) {
+						p.update();
+					} else {
+						projectiles.remove(i);
+					}
+				}
+
+				updateTiles();
+				hb.update();
+				hb2.update();
+				bg1.update();
+				bg2.update();
+				animate();
+				repaint();
+				try {
+					Thread.sleep(17);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				/*
+				 * if (robot.getCenterY() > 500) { state = GameState.Dead; }
+				 */
 			}
-			/*if (robot.getCenterY() > 500) {
-				state = GameState.Dead;
-			}*/
-		}}
+		}
 	}
 
 	public void animate() {
@@ -228,49 +228,48 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 
 	@Override
 	public void paint(Graphics g) {
-		
+
 		if (state == GameState.Running) {
 
-		g.drawImage(background, bg1.getBgX(), bg1.getBgY(), this);
-		g.drawImage(background, bg2.getBgX(), bg2.getBgY(), this);
-		paintTiles(g);
+			g.drawImage(background, bg1.getBgX(), bg1.getBgY(), this);
+			g.drawImage(background, bg2.getBgX(), bg2.getBgY(), this);
+			paintTiles(g);
 
-		ArrayList projectiles = robot.getProjectiles();
-		for (int i = 0; i < projectiles.size(); i++) {
-			Projectile p = (Projectile) projectiles.get(i);
-			g.setColor(Color.YELLOW);
-			g.fillRect(p.getX(), p.getY(), 10, 5);
+			ArrayList projectiles = robot.getProjectiles();
+			for (int i = 0; i < projectiles.size(); i++) {
+				Projectile p = (Projectile) projectiles.get(i);
+				g.setColor(Color.red);
+				g.fillRect(p.getX() + 20, p.getY() + 30, 10, 5);
+			}
+
+			// kleiren boundaries
+			g.setColor(Color.red);
+			g.drawRect(robot.getCenterX(), robot.getCenterY(), 64, 64);
+
+			g.drawImage(anim.getImage(), robot.getCenterX(),
+					robot.getCenterY(), this);
+
+			g.setColor(Color.red);
+			g.drawRect(hb.getCenterX(), hb.getCenterY(), 64, 64);
+
+			g.setColor(Color.red);
+			g.drawRect(hb2.getCenterX(), hb2.getCenterY(), 64, 64);
+
+			g.drawImage(hanim.getImage(), hb.getCenterX(), hb.getCenterY(),
+					this);
+			g.drawImage(hanim.getImage(), hb2.getCenterX(), hb2.getCenterY(),
+					this);
+			g.setFont(font);
+			g.setColor(Color.WHITE);
+			g.drawString(Integer.toString(score), 740, 30);
+
+		} else if (state == GameState.Dead) {
+			g.setColor(Color.BLACK);
+			g.fillRect(0, 0, 800, 480);
+			g.setColor(Color.WHITE);
+			g.drawString("Dead", 360, 240);
+
 		}
-		
-		
-		
-		g.setColor(Color.red);
-		g.drawRect(robot.getCenterX(),  robot.getCenterY() , 64, 64);
-		
-		
-		g.drawImage(anim.getImage(), robot.getCenterX() ,
-				robot.getCenterY() , this);
-		
-	
-	
-		
-		
-		g.drawImage(hanim.getImage(), hb.getCenterX() - 48,
-				hb.getCenterY() - 48, this);
-		g.drawImage(hanim.getImage(), hb2.getCenterX() - 48,
-				hb2.getCenterY() - 48, this);
-		g.setFont(font);
-		g.setColor(Color.WHITE);
-		g.drawString(Integer.toString(score), 740, 30);
-		
-	} else if (state == GameState.Dead) {
-		g.setColor(Color.BLACK);
-		g.fillRect(0, 0, 800, 480);
-		g.setColor(Color.WHITE);
-		g.drawString("Dead", 360, 240);
-
-
-	}
 	}
 
 	private void updateTiles() {
@@ -293,13 +292,12 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 	public void keyPressed(KeyEvent e) {
 
 		switch (e.getKeyCode()) {
-		
 
 		case KeyEvent.VK_DOWN:
 			robot.moveDown();
 			robot.setMovingDown(true);
 			break;
-			
+
 		case KeyEvent.VK_UP:
 			robot.moveUp();
 			robot.setMovingUp(true);
@@ -315,13 +313,12 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 			robot.setMovingRight(true);
 			break;
 
-	//	case KeyEvent.VK_SPACE:
-	//		robot.jump();
-	//		break;
+		// case KeyEvent.VK_SPACE:
+		// robot.jump();
+		// break;
 
 		case KeyEvent.VK_CONTROL:
-			if (robot.isDucked() == false && robot.isJumped() == false
-					&& robot.isReadyToFire()) {
+			if (robot.isReadyToFire()) {
 				robot.shoot();
 				robot.setReadyToFire(false);
 			}
