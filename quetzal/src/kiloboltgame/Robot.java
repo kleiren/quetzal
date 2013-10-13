@@ -22,13 +22,6 @@ public class Robot {
 	private int speedX = 0;
 	private int speedY = 0;
 	public static Rectangle rect = new Rectangle(0, 0, 0, 0);
-//	public static Rectangle rect2 = new Rectangle(0, 0, 0, 0);
-//	public static Rectangle rect3 = new Rectangle(0, 0, 0, 0);
-//	public static Rectangle rect4 = new Rectangle(0, 0, 0, 0);
-//	public static Rectangle yellowRed = new Rectangle(0, 0, 0, 0);
-	
-//	public static Rectangle footleft = new Rectangle(0,0,0,0);
-//	public static Rectangle footright = new Rectangle(0,0,0,0);
 	
 	
 	private Background bg1 = StartingClass.getBg1();
@@ -37,7 +30,7 @@ public class Robot {
 	private ArrayList<Projectile> projectiles = new ArrayList<Projectile>();
 
 	public void update() {
-		// Moves Character or Scrolls Background accordingly.
+	
 
 		if (speedX < 0 && centerX >= 100) {
 			centerX += speedX;

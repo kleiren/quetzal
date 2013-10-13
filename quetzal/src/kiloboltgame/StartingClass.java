@@ -105,7 +105,7 @@ public class StartingClass extends Applet implements Runnable, KeyListener {
 		try {
 			loadMap("data/map1.txt");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+	
 			e.printStackTrace();
 		}
 

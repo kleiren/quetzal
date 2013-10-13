@@ -84,17 +84,6 @@ public class Tile {
 		this.tileImage = tileImage;
 	}
 
-/*	public void checkVerticalCollision(Rectangle rect) {
-		if (rect.intersects(r)) {
-			
-		}
-
-		if (rect.intersects(r) && type == 8) {
-			robot.setJumped(false);
-			robot.setSpeedY(0);
-			robot.setCenterY(tileY - 64);
-		}
-	}*/
 
 	public void checkSideCollision(Rectangle rect) {
 	
